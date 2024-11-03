@@ -9,6 +9,10 @@ import ResizeObserver from "resize-observer-polyfill";
 
 global.ResizeObserver = ResizeObserver;
 
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
+window.HTMLElement.prototype.hasPointerCapture = vi.fn();
+window.HTMLElement.prototype.releasePointerCapture = vi.fn();
+
 // runs a clean after each test case (e.g. clearing jsdom)
 afterEach(() => {
   cleanup();
