@@ -6,6 +6,7 @@ import "@testing-library/jest-dom";
 import { afterEach } from "vitest";
 import { cleanup } from "@testing-library/react";
 import ResizeObserver from "resize-observer-polyfill";
+import { server } from "../src/mocks/server";
 
 global.ResizeObserver = ResizeObserver;
 
@@ -16,6 +17,18 @@ window.HTMLElement.prototype.releasePointerCapture = vi.fn();
 // runs a clean after each test case (e.g. clearing jsdom)
 afterEach(() => {
   cleanup();
+});
+
+beforeAll(() => {
+  server.listen();
+});
+
+afterEach(() => {
+  server.resetHandlers();
+});
+
+afterAll(() => {
+  server.close();
 });
 
 Object.defineProperty(window, "matchMedia", {
