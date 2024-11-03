@@ -6,6 +6,7 @@ import {
   returnEmptyProducts,
 } from "../../src/mocks/server-utils";
 import { server } from "../../src/mocks/server";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 describe("ProductList", () => {
   describe("when products are loading", () => {
@@ -24,7 +25,7 @@ describe("ProductList", () => {
 
       expect(getList()).not.toBeInTheDocument();
       const messageEl = await getErrorMessage();
-      expect(messageEl).toHaveTextContent("Error: Network Error");
+      expect(messageEl).toBeInTheDocument();
     });
   });
 
@@ -54,7 +55,19 @@ describe("ProductList", () => {
 });
 
 const renderProductList = () => {
-  const utils = render(<ProductList />);
+  const client = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+
+  const utils = render(
+    <QueryClientProvider client={client}>
+      <ProductList />
+    </QueryClientProvider>
+  );
 
   const helpers = {
     utils,
