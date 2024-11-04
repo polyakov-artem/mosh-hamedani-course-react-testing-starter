@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useQuery } from "react-query";
+
 import { Category } from "../entities";
+import { useQuery } from "@tanstack/react-query";
 
 const useCategories = () => {
   return useQuery<Category[], Error>({

@@ -1,9 +1,10 @@
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { Button, Table } from "@radix-ui/themes";
 import axios from "axios";
-import { useQuery } from "react-query";
+
 import { Link } from "react-router-dom";
 import { Product } from "../../entities";
+import { useQuery } from "@tanstack/react-query";
 
 const ProductListPage = withAuthenticationRequired(() => {
   const { data: products, isLoading, error } = useProducts();

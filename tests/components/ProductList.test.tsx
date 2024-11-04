@@ -6,7 +6,7 @@ import {
   returnEmptyProducts,
 } from "../../src/mocks/server-utils";
 import { server } from "../../src/mocks/server";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 describe("ProductList", () => {
   describe("when products are loading", () => {

@@ -1,12 +1,12 @@
 import axios, { AxiosError } from "axios";
-import { useQuery } from "react-query";
+
 import { Product } from "../entities";
+import { useQuery } from "@tanstack/react-query";
 
 const useProduct = (productId: number) => {
   return useQuery<Product, Error>({
     queryKey: ["products", productId],
     queryFn: () => fetchProduct(productId),
-    cacheTime: 0,
   });
 };
 

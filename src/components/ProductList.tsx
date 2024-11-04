@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { Product } from "../entities";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const ProductList = () => {
   const { data, error, isLoading } = useQuery<Product[], Error>({
