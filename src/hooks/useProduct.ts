@@ -7,11 +7,13 @@ const useProduct = (productId: number) => {
   return useQuery<Product, Error>({
     queryKey: ["products", productId],
     queryFn: () => fetchProduct(productId),
+    retry: false,
   });
 };
 
 const fetchProduct = async (id: number) => {
   try {
+    if (!id) throw new Error("Invalid ProductId");
     if (isNaN(id)) return null;
     const { data } = await axios.get(`/products/${id}`);
     return data;

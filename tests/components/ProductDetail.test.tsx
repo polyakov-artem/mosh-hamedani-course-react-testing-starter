@@ -3,6 +3,7 @@ import { fetchedProducts } from "../../src/mocks/constants";
 import { addNetworkError } from "../../src/mocks/server-utils";
 import { server } from "../../src/mocks/server";
 import ProductDetail from "../../src/components/ProductDetail";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 describe("ProductDetail", () => {
   describe("when product is loading", () => {
@@ -53,7 +54,13 @@ describe("ProductDetail", () => {
 });
 
 const renderProductDetail = (productId: number) => {
-  const utils = render(<ProductDetail productId={productId} />);
+  const client = new QueryClient();
+
+  const utils = render(
+    <QueryClientProvider client={client}>
+      <ProductDetail productId={productId} />
+    </QueryClientProvider>
+  );
 
   const helpers = {
     utils,

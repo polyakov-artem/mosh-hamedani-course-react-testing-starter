@@ -1,31 +1,11 @@
-import { useEffect, useState } from "react";
-import { Product } from "../entities";
+import useProduct from "../hooks/useProduct";
 
 const ProductDetail = ({ productId }: { productId: number }) => {
-  const [product, setProduct] = useState<Product | undefined>(undefined);
-  const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (!productId) {
-      setError("Invalid ProductId");
-      return;
-    }
-
-    setLoading(true);
-    fetch("/products/" + productId)
-      .then((res) => {
-        if (res.status === 404) return null;
-        return res.json();
-      })
-      .then((data) => setProduct(data))
-      .catch((err) => setError((err as Error).message))
-      .finally(() => setLoading(false));
-  }, [productId]);
+  const { data: product, error, isLoading } = useProduct(productId);
 
   if (isLoading) return <div>Loading...</div>;
 
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   if (!product) return <div>The given product was not found.</div>;
 
