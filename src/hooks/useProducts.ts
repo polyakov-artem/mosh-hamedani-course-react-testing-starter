@@ -1,18 +1,17 @@
 import axios, { isAxiosError } from "axios";
-
-import { Category } from "../entities";
+import { Product } from "../entities";
 import { useQuery } from "@tanstack/react-query";
 
-const useCategories = () => {
-  return useQuery<Category[], Error>({
-    queryKey: ["categories"],
+const useProducts = () => {
+  return useQuery<Product[], Error>({
+    queryKey: ["products"],
     queryFn: fetchProducts,
   });
 };
 
 export const fetchProducts = async () => {
   try {
-    const { data } = await axios.get<Category[]>("/categories");
+    const { data } = await axios.get<Product[]>("/products");
     return data;
   } catch (error) {
     if (!isAxiosError(error)) {
@@ -23,4 +22,4 @@ export const fetchProducts = async () => {
   }
 };
 
-export default useCategories;
+export default useProducts;

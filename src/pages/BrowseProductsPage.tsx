@@ -1,57 +1,36 @@
 import { Select, Table } from "@radix-ui/themes";
-import axios, { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import QuantitySelector from "../components/QuantitySelector";
-import { Category, Product } from "../entities";
+
+import useProducts from "../hooks/useProducts";
+import useCategories from "../hooks/useCategories";
 
 function BrowseProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isProductsLoading, setProductsLoading] = useState(false);
-  const [isCategoriesLoading, setCategoriesLoading] = useState(false);
-  const [errorProducts, setErrorProducts] = useState("");
-  const [errorCategories, setErrorCategories] = useState("");
+  const {
+    data: products,
+    error: errorProducts,
+    isLoading: isProductsLoading,
+  } = useProducts();
+
+  const {
+    data: categories,
+    error: errorCategories,
+    isLoading: isCategoriesLoading,
+  } = useCategories();
+
   const [selectedCategoryId, setSelectedCategoryId] = useState<
     number | undefined
   >();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setProductsLoading(true);
-        const { data } = await axios.get<Product[]>("/products");
-        setProducts(data);
-      } catch (error) {
-        if (error instanceof AxiosError) setErrorProducts(error.message);
-        else setErrorProducts("An unexpected error occurred");
-      } finally {
-        setProductsLoading(false);
-      }
-    };
-
-    const fetchCategories = async () => {
-      try {
-        setCategoriesLoading(true);
-        const { data } = await axios.get<Category[]>("/categories");
-        setCategories(data);
-      } catch (error) {
-        if (error instanceof AxiosError) setErrorCategories(error.message);
-        else setErrorCategories("An unexpected error occurred");
-      } finally {
-        setCategoriesLoading(false);
-      }
-    };
-    fetchCategories();
-    fetchProducts();
-  }, []);
-
-  if (errorProducts) return <div>Error: {errorProducts}</div>;
+  if (errorProducts) return <div>Error: {errorProducts.message}</div>;
 
   const renderCategories = () => {
-    if (isCategoriesLoading) return <Skeleton />;
-    if (errorCategories) return <div>Error: {errorCategories}</div>;
+    if (isCategoriesLoading)
+      return <Skeleton containerTestId="categories-skeleton" />;
+    if (errorCategories) return <div>Error: {errorCategories.message}</div>;
     return (
       <Select.Root
         onValueChange={(categoryId) =>
@@ -80,7 +59,7 @@ function BrowseProducts() {
     if (errorProducts) return <div>Error: {errorProducts}</div>;
 
     const visibleProducts = selectedCategoryId
-      ? products.filter((p) => p.categoryId === selectedCategoryId)
+      ? products?.filter((p) => p.categoryId === selectedCategoryId)
       : products;
 
     return (
@@ -92,22 +71,23 @@ function BrowseProducts() {
             <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
-        <Table.Body>
+        <Table.Body data-testid={"table-body"}>
           {isProductsLoading &&
             skeletons.map((skeleton) => (
               <Table.Row key={skeleton}>
                 <Table.Cell>
-                  <Skeleton />
+                  <Skeleton containerTestId="cell-skeleton" />
                 </Table.Cell>
                 <Table.Cell>
-                  <Skeleton />
+                  <Skeleton containerTestId="cell-skeleton" />
                 </Table.Cell>
                 <Table.Cell>
-                  <Skeleton />
+                  <Skeleton containerTestId="cell-skeleton" />
                 </Table.Cell>
               </Table.Row>
             ))}
           {!isProductsLoading &&
+            visibleProducts &&
             visibleProducts.map((product) => (
               <Table.Row key={product.id}>
                 <Table.Cell>{product.name}</Table.Cell>
