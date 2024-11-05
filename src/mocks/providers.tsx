@@ -1,5 +1,6 @@
 import { PropsWithChildren, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { CartProvider } from "../providers/CartProvider";
 import { Theme } from "@radix-ui/themes";
 
 export const MockQueryProvider = ({ children }: PropsWithChildren) => {
@@ -15,8 +16,16 @@ export const MockQueryProvider = ({ children }: PropsWithChildren) => {
   );
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Theme>{children}</Theme>
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
+};
+
+export const MockAllProviders = ({ children }: PropsWithChildren) => {
+  return (
+    <MockQueryProvider>
+      <CartProvider>
+        <Theme>{children}</Theme>
+      </CartProvider>
+    </MockQueryProvider>
   );
 };

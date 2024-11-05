@@ -9,10 +9,9 @@ import {
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import BrowseProducts from "../../src/pages/BrowseProductsPage";
-import { MockQueryProvider } from "../../src/mocks/providers";
+import { MockAllProviders } from "../../src/mocks/providers";
 import { addNetworkError, addServerDelay } from "../../src/mocks/server-utils";
 import { server } from "../../src/mocks/server";
-import { CartProvider } from "../../src/providers/CartProvider";
 import { fetchedCategories, fetchedProducts } from "../../src/mocks/constants";
 import { assertAbsence, assertExistance } from "../../src/mocks/testUtils";
 import userEvent, { UserEvent } from "@testing-library/user-event";
@@ -207,11 +206,9 @@ const assertTableSkeletonsExistance = () => {
 
 const renderBrowseProducts = () => {
   return render(
-    <MockQueryProvider>
-      <CartProvider>
-        <BrowseProducts />
-      </CartProvider>
-    </MockQueryProvider>
+    <MockAllProviders>
+      <BrowseProducts />
+    </MockAllProviders>
   );
 };
 
