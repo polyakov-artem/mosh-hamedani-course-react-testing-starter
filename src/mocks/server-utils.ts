@@ -1,17 +1,17 @@
 import { delay, http, HttpResponse } from "msw";
 import { SetupServerApi } from "msw/node";
 
-export const addServerDelay = (server: SetupServerApi) => {
+export const addServerDelay = (server: SetupServerApi, url: string = "*") => {
   server.use(
-    http.get("*", async () => {
+    http.get(url, async () => {
       await delay("infinite");
     })
   );
 };
 
-export const addNetworkError = (server: SetupServerApi) => {
+export const addNetworkError = (server: SetupServerApi, url: string = "*") => {
   server.use(
-    http.get("*", async () => {
+    http.get(url, async () => {
       return HttpResponse.error();
     })
   );
