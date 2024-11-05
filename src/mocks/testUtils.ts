@@ -6,8 +6,16 @@ export const assertExistance = (...getters: Array<getter>) => {
   const elements = {} as Record<string, HTMLElement[] | HTMLElement>;
 
   getters.forEach((getter) => {
-    elements[getter.name] = getter();
-    expect(elements[getter.name]).toBeInTheDocument();
+    if (!/^get\w/.test(getter.name)) {
+      throw new Error("Getter function name should start with 'get'");
+    }
+
+    const name = getter.name.replace(/^get(\w)/, (_, firstLetter) => {
+      return firstLetter.toLowerCase();
+    });
+
+    elements[name] = getter();
+    expect(elements[name]).toBeInTheDocument();
   });
 
   return elements;
