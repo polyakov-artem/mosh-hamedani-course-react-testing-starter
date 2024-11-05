@@ -30,7 +30,7 @@ function BrowseProducts() {
   const renderCategories = () => {
     if (isCategoriesLoading)
       return <Skeleton containerTestId="categories-skeleton" />;
-    if (errorCategories) return <div>Error: {errorCategories.message}</div>;
+    if (errorCategories) return null;
     return (
       <Select.Root
         onValueChange={(categoryId) =>
