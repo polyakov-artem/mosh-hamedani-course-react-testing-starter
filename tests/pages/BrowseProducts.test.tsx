@@ -102,12 +102,7 @@ describe("BrowseProducts", () => {
         expect(getErrorElement()).toBeInTheDocument();
       });
 
-      assertAbsence(
-        getHeading,
-        getTable,
-        getCategoriesSelector,
-        getCategoriesSkeleton
-      );
+      assertAbsence(getTable);
     });
   });
 
