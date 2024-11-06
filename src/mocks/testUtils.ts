@@ -26,3 +26,14 @@ export const assertAbsence = (...getters: Array<getter>) => {
 
   getters.forEach((getter) => expect(getter).toThrow());
 };
+
+export const toRegExp = (text: string, flags: string = "i") =>
+  new RegExp(text, flags);
+
+export const delay = (time?: number) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("resolved");
+    }, time);
+  });
+};
