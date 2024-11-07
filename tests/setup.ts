@@ -7,6 +7,7 @@ import { afterEach } from "vitest";
 import { cleanup } from "@testing-library/react";
 import ResizeObserver from "resize-observer-polyfill";
 import { server } from "../src/mocks/server";
+import { PropsWithChildren, ReactNode } from "react";
 
 global.ResizeObserver = ResizeObserver;
 
@@ -31,7 +32,17 @@ afterAll(() => {
   server.close();
 });
 
-vi.mock("@auth0/auth0-react");
+vi.mock("@auth0/auth0-react", () => {
+  return {
+    useAuth0: vi.fn().mockReturnValue({
+      user: undefined,
+      isLoading: false,
+      isAuthenticated: false,
+    }),
+    Auth0Provider: ({ children }: PropsWithChildren) => children,
+    withAuthenticationRequired: (component: ReactNode) => component,
+  };
+});
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,

@@ -1,4 +1,7 @@
 import { useAuth0, User } from "@auth0/auth0-react";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import routes from "../routes";
+import { render } from "@testing-library/react";
 
 export type getter = () => HTMLElement[] | HTMLElement;
 
@@ -57,4 +60,10 @@ export const mockAuthState = (state: AuthState) => {
     logout: vi.fn(),
     handleRedirectCallback: vi.fn(),
   });
+};
+
+export const navigateTo = (path: string) => {
+  const router = createMemoryRouter(routes, { initialEntries: [path] });
+
+  return render(<RouterProvider router={router} />);
 };
