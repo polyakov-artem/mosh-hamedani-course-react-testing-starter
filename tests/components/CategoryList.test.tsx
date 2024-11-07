@@ -1,9 +1,9 @@
 import CategoryList from "../../src/components/CategoryList";
 import { fetchedCategories } from "../../src/mocks/constants";
+import { MockQueryProvider } from "../../src/mocks/providers";
 import { server } from "../../src/mocks/server";
 import { addNetworkError, addServerDelay } from "../../src/mocks/server-utils";
 import { assertAbsence, assertExistance } from "../../src/mocks/testUtils";
-import ReduxProvider from "../../src/providers/ReduxProvider";
 import {
   getAllByRole,
   render,
@@ -52,7 +52,7 @@ describe("CategoryList", () => {
 });
 
 const renderCategoryList = () => {
-  const utils = render(<CategoryList />, { wrapper: ReduxProvider });
+  const utils = render(<CategoryList />, { wrapper: MockQueryProvider });
   return { utils };
 };
 
