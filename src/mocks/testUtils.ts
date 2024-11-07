@@ -1,3 +1,5 @@
+import { useAuth0, User } from "@auth0/auth0-react";
+
 export type getter = () => HTMLElement[] | HTMLElement;
 
 export const assertExistance = (...getters: Array<getter>) => {
@@ -35,5 +37,24 @@ export const delay = (time?: number) => {
     setTimeout(() => {
       resolve("resolved");
     }, time);
+  });
+};
+
+type AuthState = {
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  user?: User;
+};
+
+export const mockAuthState = (state: AuthState) => {
+  vi.mocked(useAuth0).mockReturnValue({
+    ...state,
+    getAccessTokenSilently: vi.fn().mockResolvedValue("any text"),
+    getAccessTokenWithPopup: vi.fn(),
+    getIdTokenClaims: vi.fn(),
+    loginWithRedirect: vi.fn(),
+    loginWithPopup: vi.fn(),
+    logout: vi.fn(),
+    handleRedirectCallback: vi.fn(),
   });
 };
